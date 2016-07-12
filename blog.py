@@ -193,38 +193,6 @@ class Welcome(BlogHandler):
 
 
 # Blog Management
-class NewPost(BlogHandler):
-    def get(self):
-        if self.user:
-            self.render("newpost.html")
-        else:
-            self.redirect("/login")
-
-    def post(self):
-        if not self.user:
-            self.redirect('/blog')
-
-        author = self.user.name
-        subject = self.request.get('subject')
-        content = self.request.get('content')
-
-        if subject and content:
-            p = Post(parent=blog_key(),
-                     author=author,
-                     subject=subject,
-                     content=content)
-            p.put()
-            self.redirect('/blog/%s' % str(p.key().id()))
-        else:
-            error = "Fill in all the fields, please!"
-            self.render(
-                "newpost.html",
-                author=author,
-                subject=subject,
-                content=content,
-                error=error)
-
-
 class PostPage(BlogHandler):
     """ Sends user to the permalink page upon successful post submission """
     def get(self, post_id):
@@ -255,6 +223,38 @@ class PostPage(BlogHandler):
                         comment = comment)
             c.put()
         self.redirect('/')
+
+
+class NewPost(BlogHandler):
+    def get(self):
+        if self.user:
+            self.render("newpost.html")
+        else:
+            self.redirect("/login")
+
+    def post(self):
+        if not self.user:
+            self.redirect('/blog')
+
+        author = self.user.name
+        subject = self.request.get('subject')
+        content = self.request.get('content')
+
+        if subject and content:
+            p = Post(parent=blog_key(),
+                     author=author,
+                     subject=subject,
+                     content=content)
+            p.put()
+            self.redirect('/blog/%s' % str(p.key().id()))
+        else:
+            error = "Fill in all the fields, please!"
+            self.render(
+                "newpost.html",
+                author=author,
+                subject=subject,
+                content=content,
+                error=error)
 
 
 class EditPost(BlogHandler):
@@ -308,6 +308,63 @@ class DeletePost(BlogHandler):
                 msg = "You are not authorized to delete this post."
                 self.render('message.html', msg=msg)
 
+
+class EditComment(BlogHandler):
+    """ Edits a comment """
+    def get(self):
+        if not self.user:
+            self.redirect("/login")
+        else:
+            comment_id = self.request.get('id')
+            key = db.Key.from_path('Comment', int(comment_id))
+            comment = db.get(key)
+
+            if self.user.name == comment.author:
+                self.render("editcomment.html", comment=comment)
+            else:
+                msg = "You are not authorized to edit this comment."
+                self.render("message.html", msg=msg)
+
+    def post(self):
+        if not self.user:
+            self.redirect("/login")
+        else:
+            comment_id = self.request.get('id')
+            edit_comment = self.request.get('editcomment')
+            key = db.Key.from_path('Comment', int(comment_id))
+            comment = db.get(key)
+
+            if edit_comment:
+                comment.comment = edit_comment
+                comment.put()
+                self.render("message.html", msg="Comment updated.")
+            else:
+                self.render("message.html", msg="Error updating the comment.")
+
+
+class DeleteComment(BlogHandler):
+    """ Deletes a comment """
+    def get(self):
+        if not self.user:
+            self.redirect("/login")
+        else:
+            comment_id = self.request.get('id')
+            key = db.Key.from_path('Comment', int(comment_id))
+            comment = db.get(key)
+
+            if self.user.name == comment.author:
+                db.delete(key)
+                self.render("message.html", msg="Comment deleted.")
+            else:
+                msg = "You are not authorized to delete this comment."
+                self.render('message.html', msg=msg)
+
+class Upvote(BlogHandler):
+    """ Manages upvotes on a post """
+
+
+class Downvote(BlogHandler):
+    """ Manages downvotes on a post """
 
 
 # User Management
@@ -409,10 +466,16 @@ class Logout(BlogHandler):
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/blog/?', BlogFront),
+    ('/welcome', Welcome),
     ('/blog/([0-9]+)', PostPage),
     ('/blog/newpost', NewPost),
+    ('/blog/edit', EditPost),
+    ('/blog/delete', DeletePost),
+    ('/blog/editcomment', EditComment),
+    ('/blog/deletecomment', DeleteComment),
+    ('/blog/upvote', Upvote),
+    ('/blog/downvote', Downvote),
     ('/signup', Register),
     ('/login', Login),
     ('/logout', Logout),
-    ('/welcome', Welcome),
 ], debug=True)
