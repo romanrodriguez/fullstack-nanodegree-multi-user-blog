@@ -226,16 +226,69 @@ class NewPost(BlogHandler):
 
 
 class PostPage(BlogHandler):
+    """ Sends user to the permalink page upon successful post submission """
     def get(self, post_id):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         post = db.get(key)
 
         if not post:
-            self.error(404)
-            return
+            msg = "Something went wrong!"
+            self.render("message.html", msg=msg)
 
-        self.render("permalink.html", post=post)
+        comments = db.GqlQuery("SELECT * FROM Comment "
+                               + "WHERE post_id = :1 "
+                               + "ORDER BY created DESC",
+                               post_id)
 
+        self.render("permalink.html", post=post, comments=comments)
+
+    def post(self, post_id):
+        key = db.Key.from_path('Post', int(post_id), parent = blog_key())
+        post = db.get(key)
+
+        author = self.user.name
+        comment = self.request.get('comment')
+
+        if comment:
+            c = Comment(author = author,
+                        post_id = post_id,
+                        comment = comment)
+            c.put()
+        self.redirect('/')
+
+
+class EditPost(BlogHandler):
+    """ Edit existing blog posts """
+    def get(self):
+        if not self.user:
+            self.redirect("/login")
+        else:
+            post_id = self.request.get('id')
+            key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+            post = db.get(key)
+
+            if self.user.name == post.author:
+                self.render('editpost.html', p=post)
+            else:
+                msg = "You are not authorized to edit this post."
+                self.render('message.html', msg=msg)
+
+    def post(self):
+        if not self.user:
+            self.redirect("/login")
+        else:
+            post_id = self.request.get('id')
+            new_content = self.request.get('editpost')
+            key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+            p = db.get(key)
+
+            if new_content:
+                p.content = new_content
+                p.put()
+                self.redirect('/%s' % post_id)
+            else:
+                error = "Content cannot be empty."
+                self.render("editpost.html", p=p, error=error)
 
 # User Management
 # REGEX Rules
