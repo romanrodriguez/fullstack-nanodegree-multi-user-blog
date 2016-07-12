@@ -290,6 +290,26 @@ class EditPost(BlogHandler):
                 error = "Content cannot be empty."
                 self.render("editpost.html", p=p, error=error)
 
+
+class DeletePost(BlogHandler):
+    """ Delete existing blog posts """
+    def get(self):
+        if not self.user:
+            self.redirect("/login")
+        else:
+            post_id = self.request.get('id')
+            key = db.Key.from_path('Post', int(post_id), parent = blog_key())
+            post = db.get(key)
+
+            if self.user.name == post.author:
+                db.delete(key)
+                self.render("message.html", msg="Post deleted.")
+            else:
+                msg = "You are not authorized to delete this post."
+                self.render('message.html', msg=msg)
+
+
+
 # User Management
 # REGEX Rules
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
