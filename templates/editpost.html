@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post">
+  <div class="post">
+    <div class="post-area">
+      <div class="post-heading">
+        <div class="post-title">
+          {{p.subject}}
+        </div>
+
+        <div class="post-date">
+          {{p.author}}
+          &nbsp;|&nbsp;
+          {{p.created.strftime("%b %d, %Y")}}
+        </div>
+      </div>
+
+      <div class="post-content">
+        <textarea name="editpost">{{p.content | safe}}</textarea>
+        <div class="error">
+          {{error}}
+        </div>
+        <input class="submit-btn" type="submit" value="Submit" />
+        <input class="submit-btn" type="button" value="Cancel" onClick="history.go(-1); return true;" />
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
