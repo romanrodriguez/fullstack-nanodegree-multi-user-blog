@@ -108,12 +108,23 @@ class Post(db.Model):
     content = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
+    votes = db.IntegerProperty(default=0)
+    upvotes = db.StringListProperty()
+    downvotes = db.StringListProperty()
 
 
     def render(self):
         """ Renders blog post to environment """
         self._render_text = self.content.replace('\n', '<br>')
         return render_str("post.html", p=self)
+
+
+class Comment(db.Model):
+    """ Creates entity to store comments in GAE Datastore """
+    author = db.StringProperty()
+    post_id = db.StringProperty(required=True)
+    comment = db.TextProperty(required=True)
+    created = db.DateTimeProperty(auto_now=True)
 
 
 # Base Blog Handler
