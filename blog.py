@@ -166,18 +166,6 @@ class BlogHandler(webapp2.RequestHandler):
         self.user = uid and User.by_id(int(uid))
 
 
-
-
-
-
-
-def render_post(response, post):
-    response.out.write('<b>' + post.subject + '</b><br>')
-    response.out.write(post.content)
-
-
-
-
 # Page Management
 class MainPage(BlogHandler):
     def get(self):
@@ -250,19 +238,6 @@ class PostPage(BlogHandler):
 
 
 # User Management
-class Rot13(BlogHandler):
-    def get(self):
-        self.render('rot13-form.html')
-
-    def post(self):
-        rot13 = ''
-        text = self.request.get('text')
-        if text:
-            rot13 = text.encode('rot13')
-
-        self.render('rot13-form.html', text=rot13)
-
-
 # REGEX Rules
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 PASS_RE = re.compile(r"^.{3,20}$")
@@ -360,7 +335,6 @@ class Logout(BlogHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/rot13', Rot13),
     ('/blog/?', BlogFront),
     ('/blog/([0-9]+)', PostPage),
     ('/blog/newpost', NewPost),
