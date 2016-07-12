@@ -369,20 +369,20 @@ class Upvote(BlogHandler):
 
             if post.author == self.user.name:
                 self.render("message.html", msg = "This is your own post.")
-            elif self.user.name in post.upvoters:
+            elif self.user.name in post.upvotes:
                 post.votes -= 1
-                post.upvoters.remove(self.user.name)
+                post.upvotes.remove(self.user.name)
                 post.put()
                 self.render("message.html", msg = ":(")
-            elif self.user.name in post.downvoters:
+            elif self.user.name in post.downvotes:
                 post.votes += 2
-                post.downvoters.remove(self.user.name)
-                post.upvoters.append(self.user.name)
+                post.downvotes.remove(self.user.name)
+                post.upvotes.append(self.user.name)
                 post.put()
                 self.render("message.html", msg = "Thanks!")
             else:
                 post.votes += 1
-                post.upvoters.append(self.user.name)
+                post.upvotes.append(self.user.name)
                 post.put()
                 self.render("message.html", msg = "Thanks!")
         else:
@@ -398,20 +398,20 @@ class Downvote(BlogHandler):
 
             if post.author == self.user.name:
                 self.render("message.html", msg = "This is your own post.")
-            elif self.user.name in post.downvoters:
+            elif self.user.name in post.downvotes:
                 post.votes += 1
-                post.downvoters.remove(self.user.name)
+                post.downvotes.remove(self.user.name)
                 post.put()
                 self.render("message.html", msg = ":)")
-            elif self.user.name in post.upvoters:
+            elif self.user.name in post.upvotes:
                 post.votes -= 2
-                post.upvoters.remove(self.user.name)
-                post.downvoters.append(self.user.name)
+                post.upvotes.remove(self.user.name)
+                post.downvotes.append(self.user.name)
                 post.put()
                 self.render("message.html", msg = ":(")
             else:
                 post.votes -= 1
-                post.downvoters.append(self.user.name)
+                post.downvotes.append(self.user.name)
                 post.put()
                 self.render("message.html", msg = ":(")
         else:
