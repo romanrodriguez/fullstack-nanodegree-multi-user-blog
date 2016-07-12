@@ -112,7 +112,6 @@ class Post(db.Model):
     upvotes = db.StringListProperty()
     downvotes = db.StringListProperty()
 
-
     def render(self):
         """ Renders blog post to environment """
         self._render_text = self.content.replace('\n', '<br>')
@@ -185,7 +184,7 @@ class Welcome(BlogHandler):
         if user:
             username = check_secure_val(user)
             if username:
-                self.render("welcome.html", username = username)
+                self.render("welcome.html", username=username)
             else:
                 self.redirect('/signup')
         else:
@@ -211,16 +210,16 @@ class PostPage(BlogHandler):
         self.render("permalink.html", post=post, comments=comments)
 
     def post(self, post_id):
-        key = db.Key.from_path('Post', int(post_id), parent = blog_key())
+        key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         post = db.get(key)
 
         author = self.user.name
         comment = self.request.get('comment')
 
         if comment:
-            c = Comment(author = author,
-                        post_id = post_id,
-                        comment = comment)
+            c = Comment(author=author,
+                        post_id=post_id,
+                        comment=comment)
             c.put()
         self.redirect('/')
 
@@ -298,7 +297,7 @@ class DeletePost(BlogHandler):
             self.redirect("/login")
         else:
             post_id = self.request.get('id')
-            key = db.Key.from_path('Post', int(post_id), parent = blog_key())
+            key = db.Key.from_path('Post', int(post_id), parent=blog_key())
             post = db.get(key)
 
             if self.user.name == post.author:
@@ -359,61 +358,63 @@ class DeleteComment(BlogHandler):
                 msg = "You are not authorized to delete this comment."
                 self.render('message.html', msg=msg)
 
+
 class Upvote(BlogHandler):
     """ Manages upvotes on a post """
     def get(self):
         if self.user:
             post_id = self.request.get('id')
-            key = db.Key.from_path('Post', int(post_id), parent = blog_key())
+            key = db.Key.from_path('Post', int(post_id), parent=blog_key())
             post = db.get(key)
 
             if post.author == self.user.name:
-                self.render("message.html", msg = "This is your own post.")
+                self.render("message.html", msg="This is your own post.")
             elif self.user.name in post.upvotes:
                 post.votes -= 1
                 post.upvotes.remove(self.user.name)
                 post.put()
-                self.render("message.html", msg = ":(")
+                self.render("message.html", msg=":(")
             elif self.user.name in post.downvotes:
                 post.votes += 2
                 post.downvotes.remove(self.user.name)
                 post.upvotes.append(self.user.name)
                 post.put()
-                self.render("message.html", msg = "Thanks!")
+                self.render("message.html", msg="Thanks!")
             else:
                 post.votes += 1
                 post.upvotes.append(self.user.name)
                 post.put()
-                self.render("message.html", msg = "Thanks!")
+                self.render("message.html", msg="Thanks!")
         else:
             self.redirect('/login')
+
 
 class Downvote(BlogHandler):
     """ Manages downvotes on a post """
     def get(self):
         if self.user:
             post_id = self.request.get('id')
-            key = db.Key.from_path('Post', int(post_id), parent = blog_key())
+            key = db.Key.from_path('Post', int(post_id), parent=blog_key())
             post = db.get(key)
 
             if post.author == self.user.name:
-                self.render("message.html", msg = "This is your own post.")
+                self.render("message.html", msg="This is your own post.")
             elif self.user.name in post.downvotes:
                 post.votes += 1
                 post.downvotes.remove(self.user.name)
                 post.put()
-                self.render("message.html", msg = ":)")
+                self.render("message.html", msg=":)")
             elif self.user.name in post.upvotes:
                 post.votes -= 2
                 post.upvotes.remove(self.user.name)
                 post.downvotes.append(self.user.name)
                 post.put()
-                self.render("message.html", msg = ":(")
+                self.render("message.html", msg=":(")
             else:
                 post.votes -= 1
                 post.downvotes.append(self.user.name)
                 post.put()
-                self.render("message.html", msg = ":(")
+                self.render("message.html", msg=":(")
         else:
             self.redirect('/login')
 
