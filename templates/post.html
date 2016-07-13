@@ -1,15 +1,29 @@
 <div class="post">
-  <div class="post-heading">
-    <div class="post-title">
-      {{p.subject}}
+  <div class="post-votes">
+    <a href="/blog/upvote?id={{p.key().id()}}">
+    <i class="fa fa-arrow-up" aria-hidden="true" alt="Upvote"></i>
+    </a>
+    <div class="votes">{{p.votes}}</div>
+    <a href="/blog/downvote?id={{p.key().id()}}">
+    <i class="fa fa-arrow-down" aria-hidden="true" alt="Downvote"></i>
+    </a>
+  </div>
+  <div class="post-area">
+    <div class="post-heading">
+      <div class="post-title">
+        <a href="/blog/{{p.key().id()}}">{{p.subject}}</a>
+      </div>
+      <div class="post-date">
+        submitted by {{p.author}}
+        &nbsp;|&nbsp;
+        {{p.created.strftime("%b %d, %Y")}}
+      </div>
     </div>
-
-    <div class="post-date">
-      {{p.created.strftime("%b %d, %Y")}}
+    <div class="post-content">
+      {{p._render_text | safe}}
     </div>
   </div>
-
-  <div class="post-content">
-    {{p._render_text | safe}}
-  </div>
+</div>
+<div class="error">
+  {{vote_error}}
 </div>

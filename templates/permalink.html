@@ -1,5 +1,39 @@
 {% extends "base.html" %}
-
 {% block content %}
-  {{post.render() | safe}}
+{{post.render() | safe}}
+<div class="manage-post">
+  <ul>
+    <li>
+      <a href="/blog/edit?id={{post.key().id()}}">
+      <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
+      <span> Edit</span>
+      </a>
+    </li>
+    <li>
+      <a href="/blog/delete?id={{post.key().id()}}">
+      <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
+      <span>Delete</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div class="comment-area">
+  <form method="post">
+    <label>Add Comment:</label>
+    <textarea name="comment"></textarea>
+    <input class="submit-btn" type="submit" />
+  </form>
+  {% if comments %}
+  {% for comment in comments %}
+  <div class="comment-post">
+    <p class="author">
+      submitted by {{comment.author}}
+      <a href="/blog/editcomment?id={{comment.key().id()}}">-edit</a>
+      <a href="/blog/deletecomment?id={{comment.key().id()}}">-delete</a>
+    </p>
+    <p>{{comment.comment}}</p>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
 {% endblock %}

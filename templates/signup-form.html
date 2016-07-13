@@ -1,39 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Signup</h1>
-  <form method="post">
+<h1>Signup</h1>
+<form method="post">
+  <div class="form-group">
     <label>Username</label>
+    <input name="username" value="{{ username }}">
     <div class="error">
       {% if user_error %}
-        That's not a valid username.
+      That's not a valid username.
       {% endif %}
       {% if exist_error %}
-        That username already exists.
+      That username already exists.
       {% endif %}
     </div>
-    <input name="username" value="{{ username }}">
+  </div>
+  <div class="form-group">
     <label>Password</label>
+    <input type="password" name="password">
     <div class="error">
       {% if pwd_error %}
-        That's not a valid password.
+      That's not a valid password.
       {% endif %}
     </div>
-    <input type="password" name="password">
+  </div>
+  <div class="form-group">
     <label>Verify Password</label>
+    <input type="password" name="verify">
     <div class="error">
       {% if verify_error %}
-        Passwords do not match.
+      Passwords do not match.
       {% endif %}
     </div>
-    <input type="password" name="verify">
-    <label>Email (optional)</label>
-    <div class="error">
-      {% if email_error %}
-        That's not a valid email.
-      {% endif %}
-    </div>
-    <input name="email" value="{{ email }}">
-    <br>
-    <input type="Submit">
-  </form>
+  </div>
+  <div class="form-group">
+  <label>Email (optional)</label>
+  <input name="email" value="{{ email }}">
+  <div class="error">
+    {% if email_error %}
+    That's not a valid email.
+    {% endif %}
+  </div>
+  <input class="submit-btn" type="Submit">
+</form>
 {% endblock %}

@@ -2,13 +2,51 @@ body {
     position: relative;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 14px;
-
-    width: 800px;
+    width: 60%;
     margin: 0 auto;
     padding: 10px;
     color: #333;
 }
-
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+a {
+    color: gray;
+    text-decoration: none;
+}
+img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+form {
+    width: 250px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+.form-group > input {
+    font-size: 120%;
+    color: #5a5854;
+    background-color: #f2f2f2;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+    padding: 5px 5px 5px 30px;
+    background-repeat: no-repeat;
+    background-position: 8px 9px;
+    display: block;
+    margin-bottom: 10px;
+}
+.form-group > input:focus,
+input:hover {
+    background-color: #ffffff;
+    border: 1px solid #b1e1e4;
+}
 .login-area {
     font-size: 13px;
     color: gray;
@@ -16,100 +54,48 @@ body {
     top: 10px;
     right: 10px;
 }
-
-.login-link {
-    color: gray;
-    text-decoration: none;
-}
-
 .login-link:visited {
     color: gray;
 }
-
 .login-link:hover {
     text-decoration: underline;
 }
-
-h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-img {
-    display: block;
-    margin: 0 auto;
-    height: 600px;
-    width: 800px;
-}
-
 .error {
     color: red;
 }
-
 label {
-  display: block;
-  font-size: 20px;
+    display: block;
+    font-size: 20px;
 }
-
 label + label {
     margin-top: 20px;
 }
-
 input[type=text] {
     width: 500px;
     font-size: 20px;
     padding: 2px;
     font-family: monospace;
 }
-
 textarea {
-  width: 500px;
-  height: 400px;
-  font-size: 17px;
-  font-family: monospace;
+    width: 500px;
+    height: 400px;
+    font-size: 17px;
+    font-family: monospace;
 }
+/* input[class=submit-btn] */
 
 input[type=submit] {
-  font-size: 24px;
+    font-size: 20px;
 }
-
 .main-title {
     display: block;
     color: #222;
-    font-size: 40px;
+    font-size: 38px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 30px;
     text-decoration: none;
 }
-
-.post + .post {
-    margin-top: 15px;
-}
-
-.post-heading {
-    position: relative;
-    border-bottom: 3px solid #666;
-}
-
-.post-title {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.post-date {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    color: #999;
-
-}
-
-.post-content {
-    margin-top: 5px;
-}
-
 .navigation {
     list-style-type: none;
     margin: 0;
@@ -117,11 +103,9 @@ input[type=submit] {
     overflow: hidden;
     background-color: #333;
 }
-
 .nav-item {
     float: left;
 }
-
 .nav-item a {
     display: block;
     color: white;
@@ -129,8 +113,139 @@ input[type=submit] {
     padding: 14px 16px;
     text-decoration: none;
 }
-
 /* Change the link color to #111 (black) on hover */
+
 .nav-item a:hover {
     background-color: #111;
+}
+.submit-btn {
+    color: #444444;
+    text-shadow: 0px 1px 1px 1px #fff;
+    border-bottom: 2px solid #b2b2b2;
+    border-radius: 5px;
+    background-color: b9e4e3;
+    background: -webkit-gradient(linear, left top, left bottom, from(#beeae9), to (#a8cfce));
+    background: -moz-linear-gradient(top, #beeae9, #a8cfce);
+    background: -o-linear-gradient(top, #beeae9, #a8cfce);
+    background: -ms-linear-gradient(top, #beeae9, #a8cfce);
+}
+.submit-btn:hover {
+    color: #333333;
+    border: 1px solid #a4a4a4;
+    border-top: 2px solid #b2b2b2;
+    border-radius: 5px;
+    background-color: #a0dbc4;
+    background: -webkit-gradient(linear, left top, left bottom, from(#a8cfce), to (#beeae9));
+    background: -moz-linear-gradient(top, #a8cfce, #beeae9);
+    background: -o-linear-gradient(top, #a8cfce, #beeae9);
+    background: -ms-linear-gradient(top, #a8cfce, #beeae9);
+}
+.post {
+    display: flex;
+    margin-top: 15px;
+}
+.post + .post {
+    margin-top: 15px;
+}
+.post-area {
+    flex: 1;
+}
+.post-heading {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* are the ones down here even necessary? */
+
+    position: relative;
+    border-bottom: 2px solid #666;
+}
+.post-title {
+    flex: 1;
+    font-size: 24px;
+    font-weight: bold;
+}
+.post-date {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: #999;
+}
+.post-content {
+    margin-top: 15px;
+}
+.post-votes {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 25px;
+}
+.post-votes button {
+    border: none;
+    background-color: transparent;
+}
+.post-votes .votes {
+    align-self: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+.manage-post {
+    display: flex;
+    margin-top: 10px;
+    justify-content: flex-start;
+}
+.manage-post > ul {
+    float: left;
+    padding: 5px 10px;
+    margin: 0 0 0 10px;
+}
+.manage-post > ul > li {
+    list-style-type: none;
+    float: left;
+    padding: 5px 10px;
+    margin: 0 0 0 10px;
+}
+.manage-post > ul > li > a {
+    display: flex;
+}
+.manage-post > ul > li > a > span {
+    align-self: center;
+    font-size: 14px;
+}
+textarea[name="editpost"] {
+    height: 300px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.comment-area {
+    margin-top: 10px;
+}
+.comment-area form {
+    margin-bottom: 40px;
+}
+.comment-area label {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.comment-area textarea {
+    height: 80px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.comment-area input {
+    float: right;
+}
+.comment-post {
+    margin-bottom: 30px;
+}
+.comment-post .author {
+    color: grey;
+    margin-bottom: -10px;
+}
+.comment-post a {
+    margin-left: 8px;
+    font-style: italic;
+    color: #aaa;
 }

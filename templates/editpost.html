@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block content %}
 <form method="post">
   <div class="post">
@@ -8,14 +7,12 @@
         <div class="post-title">
           {{p.subject}}
         </div>
-
         <div class="post-date">
           {{p.author}}
           &nbsp;|&nbsp;
           {{p.created.strftime("%b %d, %Y")}}
         </div>
       </div>
-
       <div class="post-content">
         <textarea name="editpost">{{p.content | safe}}</textarea>
         <div class="error">

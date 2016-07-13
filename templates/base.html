@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Roman's Multi-User Blog</title>
-  <link type="text/css" rel="stylesheet" href="/static/main.css" />
-</head>
-<body>
-  <a href="/" class="main-title">
+  <head>
+    <meta charset="utf-8">
+    <title>Roman's Multi-User Blog</title>
+    <link type="text/css" rel="stylesheet" href="/static/main.css" />
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+  </head>
+  <body>
+    <a href="/" class="main-title">
     Roman's Multi-User Blog
-  </a>
-  <ul class="navigation">
-    <li class="nav-item"><a href="/">Home</a></li>
-    <li class="nav-item"><a href="/blog">Blog</a></li>
-    <li class="nav-item"><a href="/blog/newpost">New Post</a></li>
-</ul>
-  <div class="login-area">
-    {% if user %}
+    </a>
+    <ul class="navigation">
+      <li class="nav-item"><a href="/">Home</a></li>
+      <li class="nav-item"><a href="/blog">Blog</a></li>
+      <li class="nav-item"><a href="/blog/newpost">New Post</a></li>
+    </ul>
+    <div class="login-area">
+      {% if user %}
       {{user.name}} (<a class="login-link" href="/logout">logout</a>)
-    {% else %}
+      {% else %}
       <a class="login-link" href="/login">login</a>
       |
       <a class="login-link" href="/signup">signup</a>
-    {% endif %}
-  </div>
-  <div id="content">
-  {% block content %}
-  {% endblock %}
-  </div>
-</body>
+      {% endif %}
+    </div>
+    <div id="content">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
 </html>

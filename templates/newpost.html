@@ -3,14 +3,14 @@
   <h2>New Blog Post</h2>
   <form method="post">
     <label>
-      <div>subject</div>
+      <div>Subject</div>
       <input type="text" name="subject" value="{{ subject }}">
     </label>
     <label>
-      <div>content</div>
+      <div>Content</div>
       <textarea name="content">{{ content }}</textarea>
     </label>
     <div class="error">{{ error }}</div>
-    <input type="submit">
+    <input class="submit-btn" type="submit">
   </form>
 {% endblock %}

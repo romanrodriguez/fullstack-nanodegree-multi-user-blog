@@ -284,7 +284,7 @@ class EditPost(BlogHandler):
             if new_content:
                 p.content = new_content
                 p.put()
-                self.redirect('/%s' % post_id)
+                self.redirect('/blog/%s' % post_id)
             else:
                 error = "Content cannot be empty."
                 self.render("editpost.html", p=p, error=error)
