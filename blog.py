@@ -68,7 +68,7 @@ class NewPost(BlogHandler):
 
     def post(self):
         if not self.user:
-            self.redirect('/blog')
+            return self.redirect('/blog')
 
         author = self.user.name
         subject = self.request.get('subject')
